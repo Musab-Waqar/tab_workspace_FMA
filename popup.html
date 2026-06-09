@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FMA Space</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-brand">
+      <span class="brand-icon">⬡</span>
+      <span class="brand-name">FMA Space</span>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="btn-import" title="Import spaces">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+      <button class="icon-btn" id="btn-export-all" title="Export all spaces">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </button>
+      <button class="icon-btn" id="btn-settings" title="Settings">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="search-input" placeholder="Filter spaces…" autocomplete="off" spellcheck="false" />
+  </div>
+
+  <!-- Space List -->
+  <main class="spaces-list" id="spaces-list">
+    <!-- Populated by popup.js -->
+  </main>
+
+  <!-- Empty State -->
+  <div class="empty-state" id="empty-state" hidden>
+    <div class="empty-icon">⬡</div>
+    <p class="empty-title">No spaces yet</p>
+    <p class="empty-sub">Create one to get started</p>
+  </div>
+
+  <!-- No Results -->
+  <div class="empty-state" id="no-results" hidden>
+    <p class="empty-title">No matches</p>
+    <p class="empty-sub">Try a different search</p>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <button class="btn-new" id="btn-new-space">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      New Space
+    </button>
+    <button class="btn-capture" id="btn-capture" title="Save current window as new Space">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      Capture Window
+    </button>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Edit / Create Drawer -->
+  <div class="drawer-overlay" id="drawer-overlay" hidden></div>
+  <aside class="drawer" id="drawer" hidden>
+    <div class="drawer-header">
+      <h2 class="drawer-title" id="drawer-title">New Space</h2>
+      <button class="icon-btn" id="drawer-close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      <input type="hidden" id="edit-id" />
+
+      <!-- Name + Icon -->
+      <div class="field-row">
+        <div class="field field-icon">
+          <label>Icon</label>
+          <input type="text" id="edit-icon" maxlength="2" placeholder="🌐" />
+        </div>
+        <div class="field field-name">
+          <label>Name</label>
+          <input type="text" id="edit-name" placeholder="e.g. Research" />
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="field">
+        <label>Notes <span class="optional">optional</span></label>
+        <input type="text" id="edit-notes" placeholder="Short description…" />
+      </div>
+
+      <!-- Tabs -->
+      <div class="field">
+        <label>Tabs</label>
+        <div class="tab-list" id="tab-list"></div>
+        <div class="tab-add-row">
+          <input type="url" id="new-tab-url" placeholder="https://example.com" />
+          <label class="pin-label">
+            <input type="checkbox" id="new-tab-pinned" /> Pin
+          </label>
+          <input type="text" id="new-tab-group" placeholder="Group name" />
+          <button class="btn-add-tab" id="btn-add-tab">Add</button>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="field settings-toggles">
+        <label>Options</label>
+        <label class="toggle-row">
+          <input type="checkbox" id="setting-new-window" checked />
+          <span>Open in new window</span>
+        </label>
+        <label class="toggle-row">
+          <input type="checkbox" id="setting-group-tabs" checked />
+          <span>Group tabs</span>
+        </label>
+        <label class="toggle-row">
+          <input type="checkbox" id="setting-restore-session" />
+          <span>Restore last session</span>
+        </label>
+      </div>
+
+      <div class="field">
+        <label>Tab group name</label>
+        <input type="text" id="setting-group-name" placeholder="Same as Space name" />
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <button class="btn-ghost" id="drawer-cancel">Cancel</button>
+      <button class="btn-save" id="drawer-save">Save Space</button>
+    </div>
+  </aside>
+
+  <!-- Confirm Dialog -->
+  <div class="confirm-overlay" id="confirm-overlay" hidden>
+    <div class="confirm-box">
+      <p id="confirm-msg">Delete this space?</p>
+      <div class="confirm-actions">
+        <button class="btn-ghost" id="confirm-cancel">Cancel</button>
+        <button class="btn-danger" id="confirm-ok">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="file-import" accept=".json" hidden />
+
+  <script src="storage.js"></script>
+  <script src="space-manager.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

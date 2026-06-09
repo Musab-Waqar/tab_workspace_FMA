@@ -1,0 +1,84 @@
+<!-- options.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FMA Space Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <h1>🧠 FMA Space Settings</h1>
+
+    <section class="card">
+      <h2>General</h2>
+
+      <label class="setting">
+        <input
+          type="checkbox"
+          id="default-new-window">
+        Open Spaces in new window by default
+      </label>
+
+      <label class="setting">
+        <input
+          type="checkbox"
+          id="show-dock">
+        Enable floating dock
+      </label>
+
+      <label class="setting">
+        Keyboard Shortcut
+        <input
+          type="text"
+          id="keyboard-shortcut"
+          placeholder="Alt+Shift+S">
+      </label>
+    </section>
+
+    <section class="card">
+      <h2>Backup</h2>
+
+      <button id="export-backup">
+        Export All Spaces
+      </button>
+
+      <button id="import-backup">
+        Import Backup
+      </button>
+
+      <input
+        type="file"
+        id="backup-file"
+        accept=".json"
+        hidden>
+    </section>
+
+    <section class="card danger">
+      <h2>Reset</h2>
+
+      <button id="reset-settings">
+        Reset Settings
+      </button>
+    </section>
+
+    <div id="status" class="status"></div>
+
+    <div class="actions">
+      <button id="save-settings">
+        Save Settings
+      </button>
+    </div>
+
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="space-manager.js"></script>
+  <script src="options.js"></script>
+
+</body>
+</html>
